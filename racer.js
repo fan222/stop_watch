@@ -21,10 +21,24 @@ class Racer {
     this.sw.log();
   }
 
+  static clear() {
+    global.allRacers = [];
+  }
+
+  static reset() {
+    global.allRacers.forEach( racer => {
+      racer.sw.reset();
+      }
+    );
+  }
+
   static getWinner() {
+    if (Racer.all().length < 1){
+      return "Please add racers";
+    }
     let winner = global.allRacers[0];
     for (let i = 1; i < global.allRacers.length; i++) {
-      if (winner.sw.time >= global.allRacers[i].sw.time) {
+      if (winner.sw.time > global.allRacers[i].sw.time) {
         winner = global.allRacers[i];
       }
     }
@@ -32,9 +46,19 @@ class Racer {
   }
 }
 
+
+//Because Racer.all() returns an array,
+//so define start and stop methods as Array.prototype
 Array.prototype.start = function () {
   global.allRacers.forEach( racer => {
     racer.sw.start();
+    }
+  );
+};
+
+Array.prototype.stop = function () {
+  global.allRacers.forEach( racer => {
+    racer.sw.stop();
     }
   );
 };
